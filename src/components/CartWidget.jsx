@@ -1,19 +1,14 @@
-import React from 'react'
-import { BsFillCartFill } from "react-icons/bs";
-import { Flex, Spacer } from '@chakra-ui/react';
+import React from 'react';
 
 const CartWidget = () => {
-    return (
-        <>
-            <Spacer />
-            <div className='logoCarrito'>
-                <h3 className='numeroCarrito'>5</h3>
-                <Flex align='center' justify='center'>
-                    <BsFillCartFill />
-                </Flex>
-            </div>
-        </>
-    )
-}
+  const cartItemCount = 5;
 
-export default CartWidget
+  return (
+    <div className="cart-widget">
+      <i className="bi bi-cart"></i>
+      <span className="badge bg-danger">{cartItemCount}</span>
+    </div>
+  );
+};
+
+export default CartWidget;

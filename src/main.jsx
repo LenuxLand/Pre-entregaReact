@@ -1,14 +1,18 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import { Box, ChakraProvider } from '@chakra-ui/react'
+// main.jsx
+import 'bootstrap/dist/css/bootstrap.min.css';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-    <>
-    <ChakraProvider>
-        <Box backgroundColor = '#483D8B'>
-            <App />
-        </Box>
-    </ChakraProvider>
-    </>
-)
+import firebaseConfig from './firebaseConfig';
+
+firebase.initializeApp(firebaseConfig);
+
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);

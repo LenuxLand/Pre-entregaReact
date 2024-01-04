@@ -1,28 +1,41 @@
-import React from 'react';
-import { useState, useEffect } from "react";
-import { getProductos, getProdByCat } from "../asyncmock";
-import ItemList from './ItemList';
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { db } from '../Firebase';
 
-const ItemListContainer = () => {
-    const [productos, setProductos] = useState([]);
+const ItemListContainer = ({ greeting }) => {
+  const [items, setItems] = useState([]);
 
-    const { idCategoria } = useParams();
+  useEffect(() => {
+    // Datos de Firestore
+    const fetchData = async () => {
+      try {
+        const itemsCollection = await db.collection('Remeras').get();
+        const data = itemsCollection.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setItems(data);
+      } catch (error) {
+        console.error('Error fetching data from Firestore: ', error);
+      }
+    };
 
-    useEffect(() => {
+    fetchData();
+  }, []);
 
-        const funcionProductos = idCategoria ? getProdByCat : getProductos;
+  return (
+    <div className="container mt-5">
+      <div className="alert alert-primary" role="alert">
+        {greeting}
+      </div>
+      <ul>
+        {items.map((item) => (
+          <li key={item.id}>
+            <strong>{item.Nombre}</strong> - {item.Descripcion} - ${item.Precio}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
 
-        funcionProductos(idCategoria)
-            .then(res => setProductos(res))
-
-    }, [idCategoria])
-
-    return (
-        <>
-            <ItemList productos={productos} />
-        </>
-    )
-}
-
-export default ItemListContainer
+export default ItemListContainer;
